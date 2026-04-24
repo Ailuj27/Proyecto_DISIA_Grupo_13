@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ /app/src/
+
+RUN mkdir -p /app/models
+RUN mkdir -p /app/generated/heatmaps
+
+WORKDIR /app/src
+
+CMD ["python", "train.py", \
+     "--train_dir", "/app/data/train", \
+     "--val_dir", "/app/data/val", \
+     "--output_model", "/app/models/best_model.keras", \
+     "--output_classes", "/app/models/class_names.json"]

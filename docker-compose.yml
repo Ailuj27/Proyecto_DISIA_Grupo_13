@@ -1,0 +1,25 @@
+services:
+  train-manual:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: brain-tumor-train-manual
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./generated:/app/generated
+
+  api-manual:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: brain-tumor-api-manual
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: /app/models/best_model.keras
+      CLASSES_PATH: /app/models/class_names.json
+      HEATMAPS_DIR: /app/generated/heatmaps
+    volumes:
+      - ./models:/app/models
+      - ./generated:/app/generated
