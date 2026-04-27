@@ -19,7 +19,7 @@ from gradcam import (
 class TumorPredictor:
     def __init__(
         self,
-        model_path: str = "/app/models/transf_model.keras",
+        model_path: str = "/app/models/best_model.keras",
         classes_path: str = "/app/models/class_names.json",
         heatmaps_dir: str = "/app/generated/heatmaps",
     ):
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--image_path", type=str, required=True)
-    parser.add_argument("--model_path", type=str, default="/app/models/transf_model.keras")
+    parser.add_argument("--model_path", type=str, default="/app/models/best_model.keras")
     parser.add_argument("--classes_path", type=str, default="/app/models/class_names.json")
     parser.add_argument("--heatmaps_dir", type=str, default="/app/generated/heatmaps")
     args = parser.parse_args()

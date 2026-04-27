@@ -20,8 +20,6 @@ RANDOM_STATE = 42
 def build_validation_dataset(val_dir: Path, batch_size: int = BATCH_SIZE):
     """
     Dataset de validación con image_dataset_from_directory.
-    No aplicamos reescalado manual para mantener consistencia
-    con EfficientNetV2 y el notebook original.
     """
     ds_validation = tf.keras.utils.image_dataset_from_directory(
         val_dir,
@@ -64,7 +62,7 @@ def build_train_generator(train_dir: Path, batch_size: int = BATCH_SIZE, seed: i
 
 def compute_mapped_class_weights_from_generator(train_generator):
     """
-    Replica la idea de mapped_class_weights del notebook.
+    Replica la idea de mapped_class_weights
     """
     classes = train_generator.classes
     unique_classes = np.unique(classes)
@@ -85,7 +83,7 @@ def compute_mapped_class_weights_from_generator(train_generator):
 
 def build_model(num_classes: int):
     """
-    Construcción del modelo fiel al notebook.
+    Construcción del modelo
     """
     include_top = False
     weights = "imagenet"
@@ -210,7 +208,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--train_dir", type=str, default="/app/data/train")
     parser.add_argument("--val_dir", type=str, default="/app/data/val")
-    parser.add_argument("--output_model", type=str, default="/app/models/transf_model.keras")
+    parser.add_argument("--output_model", type=str, default="/app/models/best_model.keras")
     parser.add_argument("--output_classes", type=str, default="/app/models/class_names.json")
     parser.add_argument("--output_history", type=str, default="/app/models/training_history_tf.csv")
     parser.add_argument("--output_log", type=str, default="/app/models/training_log_tf.csv")
