@@ -1,8 +1,11 @@
 import os
+import time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Request
 from fastapi.responses import FileResponse
+from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_client import Counter, Gauge, Histogram
 
 from infer import TumorPredictor
 
@@ -12,6 +15,37 @@ app = FastAPI(
     description="Recibe una imagen MRI, devuelve la predicción y genera un heatmap",
     version="1.0.0"
 )
+
+# Esto captura automáticamente: total de peticiones, peticiones en curso, tamaño de la respuesta,
+# códigos de estado (200, 400, 500) y latencias operativas.
+instrumentator = Instrumentator(
+    should_group_status_codes=False,
+    should_ignore_untemplated=True,
+    should_respect_env_var=False,
+    should_instrument_requests_inprogress=True,
+    excluded_handlers=[".*admin.*", "/metrics"],
+    env_var_name="ENABLE_METRICS",
+    inprogress_name="inprogress",
+    inprogress_labels=True,
+)
+# 'instrument' envuelve la app para espiarla, y 'expose' crea la ruta /metrics
+instrumentator.instrument(app).expose(app)
+# ==========================================================
+# MÉTRICAS CUSTOM DEL MODELO PARA GRAFANA
+# ==========================================================
+PREDICCIONES_TOTALES = Counter(
+    "modelo_predicciones_totales",
+    "Número total de predicciones separadas por clase",
+    ["clase_predicha"]
+)
+
+CONFIANZA_MODELO = Histogram(
+    "modelo_confianza",
+    "Distribución de la confianza del modelo"
+)
+# ==========================================================
+
+
 
 HEATMAPS_DIR = os.getenv("HEATMAPS_DIR", "/app/generated/heatmaps")
 
@@ -55,7 +89,17 @@ async def predict(request: Request, file: UploadFile = File(...)):
             )
 
         image_bytes = await file.read()
+        # --- Inicio de la Inferencia ---
+        start_time = time.time()
         result = predictor.predict_from_bytes(image_bytes)
+        inference_time = time.time() - start_time
+
+        # --- Registrar Métricas Custom para Grafana ---
+        clase = str(result["predicted_class"])
+        confianza = float(result["confidence"])
+        
+        PREDICCIONES_TOTALES.labels(clase_predicha=clase).inc()
+        CONFIANZA_MODELO.observe(confianza)
 
         base_url = str(request.base_url).rstrip("/")
         heatmap_filename = result["heatmap_filename"]

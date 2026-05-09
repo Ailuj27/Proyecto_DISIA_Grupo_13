@@ -1,0 +1,5 @@
+columna,estado,detalles
+confidence,¡DERIVA DETECTADA!,Drift score is 0.00. The drift detection method is K-S p_value. The drift threshold is 0.05.
+image_brightness,¡DERIVA DETECTADA!,Drift score is 0.00. The drift detection method is K-S p_value. The drift threshold is 0.05.
+image_contrast,¡DERIVA DETECTADA!,Drift score is 0.00. The drift detection method is K-S p_value. The drift threshold is 0.05.
+prediction,¡DERIVA DETECTADA!,Drift score is 0.04. The drift detection method is chi-square p_value. The drift threshold is 0.05.

@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s # Cada 5 segundos recolectará datos del API
+
+scrape_configs:
+  - job_name: 'fastapi-app'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['api-manual:8000'] # Apunta directamente al contenedor del

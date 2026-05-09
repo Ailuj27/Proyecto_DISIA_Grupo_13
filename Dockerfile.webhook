@@ -1,0 +1,24 @@
+# Usamos una imagen de Python ligera
+FROM python:3.10-slim
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Instalamos las librerías necesarias para el Webhook
+RUN pip install --no-cache-dir fastapi uvicorn requests
+
+# Copiamos todo el contenido de la carpeta actual al contenedor
+COPY . /app
+
+RUN ls -la /app
+
+# (Opcional pero recomendado) Instalamos el cliente de Docker
+# Por si tu script 'feedback_loop.sh' tiene comandos como 'docker compose restart'
+RUN apt-get update && apt-get install -y curl \
+    && curl -fsSL https://get.docker.com -o get-docker.sh \
+    && sh get-docker.sh
+
+WORKDIR /app/src
+
+# El comando que mantendrá vivo el contenedor
+CMD ["python3", "webhook_receiver.py"]
