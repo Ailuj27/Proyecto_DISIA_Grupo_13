@@ -1,9 +1,18 @@
-FROM python:3.10-slim
+FROM tensorflow/tensorflow:2.16.1-gpu
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir \
+    fastapi==0.115.0 \
+    "uvicorn[standard]==0.30.6" \
+    pillow==10.4.0 \
+    numpy==1.26.4 \
+    matplotlib==3.9.2 \
+    python-multipart==0.0.9 \
+    scikit-learn==1.5.1 \
+    pandas==2.2.2
 
 COPY src/ /app/src/
 

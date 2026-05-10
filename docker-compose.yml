@@ -8,6 +8,7 @@ services:
       - ./data:/app/data
       - ./models:/app/models
       - ./generated:/app/generated
+    gpus: all
 
   api-manual:
     build:
@@ -23,6 +24,7 @@ services:
     volumes:
       - ./models:/app/models
       - ./generated:/app/generated
+    gpus: all
   
   prometheus:
     image: prom/prometheus:latest
