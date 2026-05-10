@@ -5,9 +5,9 @@ services:
       dockerfile: Dockerfile.train
     container_name: brain-tumor-train-manual
     volumes:
-      - ./data:/app/data
-      - ./models:/app/models
-      - ./generated:/app/generated
+      - "${PROJECT_ROOT}/data:/app/data"
+      - "${PROJECT_ROOT}/models:/app/models"
+      - "${PROJECT_ROOT}/generated:/app/generated"
     gpus: all
 
   api-manual:

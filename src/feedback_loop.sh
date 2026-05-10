@@ -7,7 +7,8 @@ echo "========================================"
 echo "[1/3] Lanzando contenedor de reentrenamiento (train-manual)..."
 # Levantamos solo el contenedor de entrenamiento. 
 # Como comparte el volumen ./models, cuando termine sobrescribirá best_model.keras
-docker compose up --build train-manual
+# docker compose --build train-manual
+docker compose run train-manual
 
 echo "[2/3] Entrenamiento finalizado. El nuevo modelo se ha guardado."
 
