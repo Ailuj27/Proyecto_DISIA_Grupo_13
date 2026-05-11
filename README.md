@@ -8,7 +8,7 @@ Estando en la carpeta principal del proyecto y con el Docker encendido, abre una
 ## 2. Acceso a Prometeus
 Para acceder al servidor de Prometeus solamente hay que ir a la dirección http://localhost:9090. Una vez ahí se pueden establecer las queries necesarias para la monitorización.
 
-## 2. Acceso a Grafana
+## 3. Acceso a Grafana
 Para acceder al servidor de Grafana ( http://localhost:3000) pide un número de usuario y contraseña. Este usuario y contraseña es el que se utiliza por defecto:
 - User: admin
 - Pass: admin
