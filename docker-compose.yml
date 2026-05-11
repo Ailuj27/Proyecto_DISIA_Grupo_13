@@ -45,7 +45,7 @@ services:
       - grafana-storage:/var/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin # Contraseña por defecto (cámbiala si lo subes a un servidor público)
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Contraseña por defecto
     depends_on:
       - prometheus
   
@@ -59,7 +59,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: python3 src/webhook_receiver.py
     ports:
-      - "127.0.0.1:9091:9010"  # <--- Forzamos la IP local 127.0.0.1 y el puerto 9091
+      - "127.0.0.1:9091:9010"  # IP local 127.0.0.1 y el puerto 9091
     environment:
       - PYTHONUNBUFFERED=1
     
