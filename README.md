@@ -3,7 +3,22 @@
 **Nota de Despliegue**: Para garantizar la portabilidad del sistema de reentrenamiento MLOps, se ha externalizado la ruta del sistema de archivos a un archivo .env. Antes de levantar los contenedores en una máquina nueva, el evaluador debe modificar la variable ``PROJECT_ROOT`` en el archivo **.env** con la ruta absoluta donde haya descomprimido el proyecto.
 
 ## 1. Despliegue del proyecto
-Estando en la carpeta principal del proyecto y con el Docker encendido, abre una CMD y ejecuta el comando ``docker-compose up``. Esto descargagá la imagen de los contenedores creados y levantará el sistema.
+### 1.1 Despliegue por partes
+#### Entrenamiento:
+Realizar el comando `docker compose build --no-cache train-manual`.
+El modelo se almacenará en `models/best_model.keras`.
+
+#### Inferencia:
+Realizar los comandos:
+- `docker compose build --no-cache api-manual`
+- `docker compose up api-manual`
+
+Esto arrojará la IP y puerto donde debemos conectarnos (0.0.0.0:8000 por defecto)
+Debemos poner esta IP y puerto seguido de `/docs` (ej: 0.0.0.0:8000/docs)
+Una vez hecho esto, podemos usar el metodo Predict, donde debemos subir una imagen MRI y el modelo nos devolverá la clase, la confianza y un enlace para descargar la imagen después de procesada (explicabilidad del modelo)
+
+### 1.2 Despliegue completo
+Estando en la carpeta principal del proyecto y con el Docker encendido, abre una CMD y ejecuta el comando ``docker-compose up``. Esto descargagá la imagen de los contenedores creados y levantará el sistema. Cabe destacar que hasta que no se ejecute el entrenamiento completo no se debe acceder a la API.
 
 ## 2. Acceso a Prometeus
 Para acceder al servidor de Prometeus solamente hay que ir a la dirección http://localhost:9090. Una vez ahí se pueden establecer las queries necesarias para la monitorización.
