@@ -57,7 +57,7 @@ services:
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
-    command: python3 src/webhook_receiver.py
+    command: python3 /app/src/webhook_receiver.py
     ports:
       - "127.0.0.1:9091:9010"  # IP local 127.0.0.1 y el puerto 9091
     environment:
